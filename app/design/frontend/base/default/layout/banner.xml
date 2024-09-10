@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<default>
+		<block type="banner/banner" name="banner_content_top" template="banner/banner.phtml" before="-" >
+		  <action method="setPosition"><name>CONTENT_TOP</name></action>
+		</block>
+		<block type="banner/banner" name="banner_content_bottom" template="banner/banner.phtml" after="-" >
+			<action method="setPosition"><name>CONTENT_BOTTOM</name></action>
+		</block>
+	</default>
+	<cms_page>		
+		<reference name="content">
+	        <action method="insert" ifconfig="banner/general/active"><block>banner_content_top</block></action>
+			<action method="append" ifconfig="banner/general/active"><block>banner_content_bottom</block></action>
+        </reference>
+    </cms_page>
+	<catalog_category_default>
+		<reference name="content">
+	        <action method="insert" ifconfig="banner/general/active"><block>banner_content_top</block></action>
+			<action method="append" ifconfig="banner/general/active"><block>banner_content_bottom</block><after>-</after></action>
+        </reference>
+	</catalog_category_default>
+	<catalog_category_layered>
+		<reference name="content">
+	        <action method="insert" ifconfig="banner/general/active"><block>banner_content_top</block></action>
+			<action method="append" ifconfig="banner/general/active"><block>banner_content_bottom</block></action>
+        </reference>
+	</catalog_category_layered>
+</layout> 

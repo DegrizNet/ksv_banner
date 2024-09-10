@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Ksv_Banner>
+            <version>0.1.0</version>
+        </Ksv_Banner>
+    </modules>
+    <frontend>
+        <routers>
+            <banner>
+                <use>standard</use>
+                <args>
+                    <module>Ksv_Banner</module>
+                    <frontName>banner</frontName>
+                </args>
+            </banner>
+        </routers>
+        <layout>
+            <updates>
+				<banner module="Ksv_Banner">
+                    <file>banner.xml</file>
+                </banner>
+            </updates>
+        </layout>
+		 <events>
+           <core_block_abstract_prepare_layout_before>
+               <observers>
+                   <nextbits_jquery_prepare_layout_before>
+                       <class>banner/observer</class>
+                       <method>prepareLayoutBefore</method>
+                   </nextbits_jquery_prepare_layout_before>
+               </observers>
+           </core_block_abstract_prepare_layout_before>
+       </events>
+    </frontend>
+    <admin>
+        <routers>
+			<banner>
+				<use>admin</use>
+				<args>
+					<module>Ksv_Banner</module>
+					<frontName>banner</frontName>
+				</args>
+			</banner>
+        </routers>
+    </admin>
+    <adminhtml>
+		<menu>
+			<banner module="banner">
+				<title>KSV Banner</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<items module="banner">
+						<title>Manage Banners</title>
+						<sort_order>0</sort_order>
+						<action>banner/adminhtml_banner</action>
+					</items>
+					<items2 module="banner">
+						<title>Add Banner</title>
+						<sort_order>0</sort_order>
+						<action>banner/adminhtml_banner/new</action>
+					</items2>
+				</children>
+			</banner>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<banner module="banner">
+								<title>Banner Next</title>
+								<sort_order>71</sort_order>               
+								<children>
+									<items module="banner">
+										<title>Manage Banners</title>
+										<sort_order>0</sort_order>
+										<action>banner/adminhtml_banner</action>
+									</items>
+									<items2 module="banner">
+										<title>Add Banner</title>
+										<sort_order>0</sort_order>
+										<action>banner/adminhtml_banner/new</action>
+									</items2>
+								</children>
+							</banner>
+							<system>
+								<children>
+									<config>
+										<children>
+											<banner translate="title" module="banner">
+												<title>Ksv Banner Section</title>
+											</banner>
+										</children>
+									</config>
+								</children>
+							</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<banner>
+					<file>banner.xml</file>
+				</banner>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+        <models>
+            <banner>
+                <class>Ksv_Banner_Model</class>
+                <resourceModel>banner_mysql4</resourceModel>
+            </banner>
+            <banner_mysql4>
+                <class>Ksv_Banner_Model_Mysql4</class>
+                <entities>
+                    <banner>
+                        <table>banner</table>
+                    </banner>
+                </entities>
+            </banner_mysql4>
+        </models>
+        <resources>
+            <banner_setup>
+                <setup>
+                    <module>Ksv_Banner</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </banner_setup>
+            <banner_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </banner_write>
+            <banner_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </banner_read>
+        </resources>
+        <blocks>
+            <banner>
+                <class>Ksv_Banner_Block</class>
+            </banner>
+        </blocks>
+        <helpers>
+            <banner>
+                <class>Ksv_Banner_Helper</class>
+            </banner>
+        </helpers>
+    </global>
+	<default>
+		<banner>
+			<general>
+				<active>1</active>
+				<jquery>1</jquery>	
+				<responsive_banner>0</responsive_banner>
+			</general>
+		</banner>
+	 </default>
+	 <adminhtml>
+        <translate>
+            <modules>
+                <Ksv_Banner>
+                    <files>
+                        <default>Ksv_Banner.csv</default>
+                    </files>
+                </Ksv_Banner>
+            </modules>
+        </translate>
+	</adminhtml>
+	<frontend>
+		<translate>
+			<modules>
+				<Ksv_Banner>
+					<files>
+						<default>Ksv_Banner.csv</default>
+					</files>
+				</Ksv_Banner>
+			</modules>
+		</translate>
+	</frontend>
+</config>

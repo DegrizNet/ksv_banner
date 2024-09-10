@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<widgets>
+	<banner type="banner/widget" translate="Adds banner into page/block" module="banner">
+		<name>Banner - Add Banner</name>
+		<description type="desc">Adds banner into page/block</description>
+		<parameters>
+			<banner_id>
+				<label>Banner Name</label>
+				<visible>1</visible>
+				<required>1</required>
+				<type>select</type>
+				<source_model>banner/availablebanners</source_model>
+			</banner_id>
+			<template>  
+					<visible>0</visible>  
+					<value>banner/banner.phtml</value>  
+			</template>			
+		</parameters>
+	</banner>
+</widgets>

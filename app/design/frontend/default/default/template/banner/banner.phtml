@@ -1,0 +1,87 @@
+<!--
+http://www.skitter-slider.net/documentation
+http://magento.stackexchange.com/questions/3418/conditionally-show-hide-blocks-in-layout-xml
+http://www.magentocommerce.com/boards/viewthread/78982/ 
+-->
+<?php $bannerCollection = $this->_getCollection(); ?>
+<?php if (!Mage::registry('js_loded') && ($bannerCollection->count())>0 ): ?>
+<?php Mage::register('js_loded',1); ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('banner/slideshow/css/skitter.styles.css');?>" media="all" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('banner/slideshow/css/highlight.black.css');?>" media="all" />
+	<script type="text/javascript" src="<?php echo $this->getSkinUrl('banner/slideshow/js/jquery.easing.1.3.js') ?>"></script>
+	<script type="text/javascript" src="<?php echo $this->getSkinUrl('banner/slideshow/js/jquery.animate-colors-min.js') ?>"></script>
+	<script type="text/javascript" src="<?php echo $this->getSkinUrl('banner/slideshow/js/jquery.skitter.min.js') ?>"></script>
+	<script type="text/javascript" src="<?php echo $this->getSkinUrl('banner/slideshow/js/highlight.js') ?>"></script>	
+<?php if($this->helper('banner')->isResponsiveBannerEnabled()):?>
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('banner/slideshow/css/skitter.styles.responsive.css');?>" media="all" />
+<?php endif;?>
+<script>
+jQuery(document).ready(function() {
+	var options = {};	
+	if (document.location.search) {
+		var array = document.location.search.split('=');
+		var param = array[0].replace('?', '');
+		var value = array[1];			
+		if (param == 'animation') {
+			options.animation = value;
+		}
+		else if (param == 'type_navigation') {
+			if (value == 'dots_preview') {
+				jQuery('.border_box').css({'marginBottom': '40px'});
+				options['dots'] = true;
+				options['preview'] = true;
+			}
+			else {
+				options[value] = true;
+				if (value == 'dots') jQuery('.border_box').css({'marginBottom': '40px'});
+			}
+		}
+	}		
+});
+</script>
+<?php endif;?>
+<?php if(($bannerCollection->count())>0) : ?>	
+<?php $imageCollection = $this->_getBannerImageCollection($bannerCollection); ?>
+<?php foreach ($imageCollection as $item) : ?>
+	<?php 
+		$height = $item['height']; 
+		$width = $item['width']; 
+		$content = $item['content']; 
+		$advanced_settings = trim($item['advanced_settings']);		
+		$images = $this->getSortedImages($content);
+	?>
+	<?php if(isset($images) && !empty($images) && count($images)>0) : ?>
+		<script>
+		jQuery(document).ready(function() {
+			jQuery('#image-slider-<?php echo $item['position'].'-'.$item['banner_id'];?>').css({width:<?php echo $width;?>, height: <?php echo $height;?>});
+			jQuery('#image-slider-<?php echo $item['position'].'-'.$item['banner_id'];?>').skitter(
+				<?php if(empty($advanced_settings)):?>
+					{numbers_align: 'right',animation:'fade',interval: 1000,dots: true, navigation: false}
+				<?php else: ?>
+				<?php echo $advanced_settings;?>
+				<?php endif; ?>
+			);
+		});
+		</script>
+		<div class="border_box">
+			<div class="box_skitter box_skitter_large" id="image-slider-<?php echo $item['position'].'-'.$item['banner_id'];?>">
+				<ul>
+					<?php foreach($images as $image): ?>
+						<li>
+							<a <?php if(!empty($image['link'])): ?> href="<?php echo $image['link'];?>"<?php else:?> href="#" <?php endif;?> >
+								<img src="<?php echo $this->helper('banner')->resizeImg($image['file'],$width,$height);?>" <?php if(!empty($image['label'])): ?> alt="<?php echo $image['label'];?>"<?php endif?>/>
+							</a>
+							<?php if(!empty($image['html'])): ?>
+								<div class="label_text">
+									<p><?php echo $image['html']?></p>
+								</div>
+							<?php endif;?>
+						</li>
+					<?php endforeach;?>
+				</ul>
+			</div>
+		</div>
+		<div style="clear:both;"></div>
+	<?php endif;?>
+<?php endforeach;?>
+<?php endif; ?>
